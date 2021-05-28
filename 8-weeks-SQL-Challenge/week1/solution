@@ -55,3 +55,17 @@ order by order_date asc;
 | B           | curry        |
 | C           | ramen        |
 +-------------+--------------+
+
+-- What is the most purchased item on the menu and how many times was it purchased by all customers?
+
+select product_name, count(s.product_id) as total
+from menu as m join sales as s on s.product_id = m.product_id
+group by s.product_id
+order by s.product_id desc
+limit 1;
+
++--------------+-------+
+| product_name | total |
++--------------+-------+
+| ramen        |     8 |
++--------------+-------+
