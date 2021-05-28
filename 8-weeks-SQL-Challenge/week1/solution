@@ -41,3 +41,17 @@ group by customer_id;
 | C           |                 3 |
 +-------------+-------------------+
 
+-- What was the first item from the menu purchased by each customer?
+
+select distinct customer_id, product_name
+from sales as s join menu as m on s.product_id = m.product_id
+group by customer_id
+order by order_date asc;
+
++-------------+--------------+
+| customer_id | product_name |
++-------------+--------------+
+| A           | sushi        |
+| B           | curry        |
+| C           | ramen        |
++-------------+--------------+
