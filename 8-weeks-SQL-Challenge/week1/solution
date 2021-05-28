@@ -28,3 +28,16 @@ group by customer_id;
 +-------------+------------+
 
 -- How many days has each customer visited the restaurant?
+
+select distinct customer_id, count(order_date)
+from sales 
+group by customer_id;
+
++-------------+-------------------+
+| customer_id | count(order_date) |
++-------------+-------------------+
+| A           |                 6 |
+| B           |                 6 |
+| C           |                 3 |
++-------------+-------------------+
+
