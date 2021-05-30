@@ -69,3 +69,50 @@ limit 1;
 +--------------+-------+
 | ramen        |     8 |
 +--------------+-------+
+
+-- Which item was the most popular for each customer?
+
+
+with base as (
+select customer_id, product_name,
+dense_rank() over (partition by customer_id order by product_name) as levels
+from  menu as m join sales as s on s.product_id = m.product_id
+where customer_id = 'A'
+),
+
+base2 as (
+select customer_id, product_name,
+dense_rank() over (partition by customer_id order by product_name) as levels
+from  menu as m join sales as s on s.product_id = m.product_id
+where customer_id = 'B'
+),
+base3 as (
+select customer_id, product_name,
+dense_rank() over (partition by customer_id order by product_name) as levels
+from  menu as m join sales as s on s.product_id = m.product_id
+where customer_id = 'C'
+),
+
+fav as( 
+(select distinct customer_id, count(levels) as fav, product_name 
+from base
+group by levels
+order by fav desc
+limit 1)
+union 
+(select distinct customer_id, count(levels) as fav, product_name 
+from base2
+group by levels
+order by fav desc
+limit 1
+)union
+(select distinct customer_id, count(levels) as fav, product_name 
+from base3
+group by levels
+order by fav desc
+limit 1)
+order by customer_id
+)
+
+select customer_id, product_name
+from fav;
