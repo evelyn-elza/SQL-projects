@@ -165,3 +165,25 @@ order by order_date desc;
 | A           | sushi        |
 +-------------+--------------+
 
+-- What is the total items and amount spent for each member before they became a member? -- try case
+
+select mm.customer_id, count(product_name), sum(price)
+from members as mm
+         join sales as s on s.customer_id = mm.customer_id
+         join menu as m on m.product_id = s.product_id
+where join_date > order_date
+  and mm.customer_id = 'A'
+union
+select mm.customer_id, count(product_name), sum(price)
+from members as mm
+         join sales as s on s.customer_id = mm.customer_id
+         join menu as m on m.product_id = s.product_id
+where join_date > order_date
+  and mm.customer_id = 'B';
+  
++-------------+---------------------+------------+
+| customer_id | count(product_name) | sum(price) |
++-------------+---------------------+------------+
+| A           |                   2 |         25 |
+| B           |                   3 |         40 |
++-------------+---------------------+------------+
